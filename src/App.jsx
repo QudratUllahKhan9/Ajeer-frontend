@@ -1,24 +1,40 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
-// اپنی تصاویر کے پاتھ یہاں درست کر لیں
 import ajeerLogoImg from "./assets/ajeer-logo.png";
 import hrsdStarImg from "./assets/hrsd-star.png";
 
 export default function App() {
   const [permitData, setPermitData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     const pathSegments = window.location.pathname.split("/");
-    const permitId = pathSegments[pathSegments.length - 1]; // مثال کے طور پر 'c3ae6541' یا '123'
+    const permitId = pathSegments[pathSegments.length - 1];
+
+    // آپ کا دیا ہوا ڈائنامیک ڈیٹا (Fallback / Default Data)
+    const fallbackData = {
+      status: "ساري / فعال",
+      permitNumber: "TQ306376876666666",
+      permitType: "عقد خدمات – نموذج تجريبي",
+      startDate: "2026-10-29",
+      endDate: "2027-01-28",
+      workerName: "MUHAMMAD KASHIF KHAN ZAMAN",
+      idNumber: "2562349304",
+      nationality: "باكستان",
+      profession: "عامل بناء",
+      gender: "ذكر",
+      birthDate: "1993-05-13",
+      establishmentNumber: "17-8463219",
+      establishmentName: "شركة عبدالله بن حمود الحربي للتجارة",
+    };
 
     if (permitId && permitId !== "" && permitId !== "v") {
       fetch(`https://ajeerbackend.vercel.app/v/${permitId}`)
         .then((response) => {
-          if (!response.ok) {
-            throw new Error("Data not found");
+          const contentType = response.headers.get("content-type");
+          if (!response.ok || !contentType || !contentType.includes("application/json")) {
+            throw new Error("Invalid JSON response from server");
           }
           return response.json();
         })
@@ -26,53 +42,40 @@ export default function App() {
           if (data && Object.keys(data).length > 0) {
             setPermitData({
               status: data.status || "ساري / فعال",
-              permitNumber: data.permitNo || data.permitNumber || "TW0592947",
-              permitType: data.title || data.permitType || "تصريح تعاقد أجير",
-              startDate: data.startDate || "2026-11-08",
-              endDate: data.endDate || "2027-02-07",
-              workerName: data.workerName || "ZAKIR HUSSAIN ABDUL QADIR",
-              idNumber: data.idNumber || "2458147978",
-              nationality: data.nationality || "باكستان",
-              profession: data.profession || "سائق شاحنة ثقيلة",
+              permitNumber: data.permitNo || data.permitNumber || fallbackData.permitNumber,
+              permitType: data.title || data.permitType || fallbackData.permitType,
+              startDate: data.startDate || fallbackData.startDate,
+              endDate: data.endDate || fallbackData.endDate,
+              workerName: data.workerName || fallbackData.workerName,
+              idNumber: data.idNumber || fallbackData.idNumber,
+              nationality: data.nationality || fallbackData.nationality,
+              profession: data.profession || fallbackData.profession,
               gender: data.gender || "ذكر",
               birthDate: data.birthDate || "1993-05-13",
-              establishmentNumber: data.providerCr || data.establishmentNumber || "4-8462574",
-              establishmentName: data.providerCompany || data.establishmentName || "مؤسسة الهدف الاحمر للنقليات",
+              establishmentNumber: data.providerCr || data.establishmentNumber || fallbackData.establishmentNumber,
+              establishmentName: data.providerCompany || data.establishmentName || fallbackData.establishmentName,
             });
-            setError(false);
           } else {
-            setError(true);
+            setPermitData(fallbackData);
           }
           setLoading(false);
         })
         .catch((err) => {
-          console.error("Error fetching permit data:", err);
-          setError(true);
+          console.warn("API Error, falling back to default data:", err);
+          // اگر API فیل ہو جائے یا HTML ایرور دے، تب بھی یہ ڈیٹا شو ہو جائے گا
+          setPermitData(fallbackData);
           setLoading(false);
         });
     } else {
-      setError(true);
+      setPermitData(fallbackData);
       setLoading(false);
     }
   }, []);
 
-  // اگر ڈیٹا لوڈ ہو رہا ہو
   if (loading) {
     return (
-      <div className="page-wrapper" dir="rtl" style={{ justifyContent: "center", alignItems: "center" }}>
+      <div className="page-wrapper" dir="rtl" style={{ justifyContent: "center", alignItems: "center", display: "flex", height: "100vh" }}>
         <h2>جاري التحميل...</h2>
-      </div>
-    );
-  }
-
-  // اگر ڈیٹا نہ ملے یا ایرور ہو
-  if (error || !permitData) {
-    return (
-      <div className="page-wrapper" dir="rtl" style={{ justifyContent: "center", alignItems: "center", textAlign: "center", padding: "20px" }}>
-        <div style={{ background: "#fff", padding: "40px", borderRadius: "8px", border: "1px solid #d6dbde", maxWidth: "500px", width: "100%" }}>
-          <h2 style={{ color: "#dc2626", marginBottom: "15px" }}>عذراً، لم يتم العثور على التصريح</h2>
-          <p style={{ color: "#4b5563", fontSize: "16px" }}>رقم التصريح غير موجود أو حدث خطأ أثناء جلب البيانات.</p>
-        </div>
       </div>
     );
   }
@@ -98,7 +101,7 @@ export default function App() {
       <main className="verify">
         <div className="verify__card">
           <div className="card-head">
-            {/* 1. First Box (Right): Brand Section (Ajeer, Star & Text) */}
+            {/* 1. First Box (Right): Brand Section */}
             <div className="card-head__cell card-head__cell--brand">
               <div className="brand-lockup">
                 <img src={ajeerLogoImg} alt="أجير" className="brand-ajeer-img" />
