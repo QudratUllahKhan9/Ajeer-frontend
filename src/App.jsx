@@ -540,7 +540,7 @@ export default function App() {
             <div className="card-head__cell card-head__cell--status">
 
               <span className="status-ok">
-                {permitData.status || "غير محدد"}
+                {permitData.status || "ساري / فعال"}
               </span>
 
             </div>
