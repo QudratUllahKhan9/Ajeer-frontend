@@ -1,200 +1,171 @@
-@import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap");
-
 :root {
-  --page-bg: #f4f5f7;
-  --card-border: #d9dee3;
-  --line: #e3e7ea;
-  --line-soft: #eceff1;
-  --band: #e9efef;
-  --label: #f7f9fa;
-  --ink: #1b2538;
-  --ink-2: #20262f;
-  --ink-3: #4d545e;
-  --ink-4: #454c56;
-  --green: #2d7a58;
-  --fab: #3b965b;
+  --bg-page: #f1f2f3;
+  --surface: #ffffff;
+  --band: #eaedee;
+  --line: #d6dbde;
+  --line-soft: #e6e9ec;
+  --ink: #111827;
+  --link-blue: #1b3a6b;
+  --green: #0c7c4e;
+  --fab-green: #3f925b;
+  --navy: #1b2538;
 }
 
 * {
   box-sizing: border-box;
-}
-
-html,
-body,
-#root {
   margin: 0;
   padding: 0;
 }
 
 body {
-  background: var(--page-bg);
+  font-family: 'Cairo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-page);
   color: var(--ink);
-  font-family: "Tajawal", "Segoe UI", Tahoma, Arial, sans-serif;
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.ajeer-page {
+.page-wrapper {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  direction: rtl;
 }
 
-/* ---------------- site header ---------------- */
+a {
+  text-decoration: none;
+}
+
+/* ---------------- Top Header ---------------- */
 .site-header {
-  background: #fff;
-  border-bottom: 1px solid var(--line-soft);
-  height: 52px;
-  padding: 0 26px;
+  background: #ffffff;
+  height: 54px;
+  padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid var(--line-soft);
 }
 
-.site-header__left,
-.site-header__right {
-  display: flex;
-  align-items: center;
-}
-
-/* ---------------- brand svg lockups ---------------- */
-.brand-lockup {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.ministry {
+.header-brand-right {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.ministry__text {
+.header-brand-left {
+  display: flex;
+  align-items: center;
+}
+
+.hrsd-top__text {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  text-align: right;
+  font-size: 8.5px;
+  font-weight: 700;
+  color: #166558;
   line-height: 1.35;
 }
 
-.ministry__kingdom {
-  font-size: 7px;
-  color: #7a8290;
-  letter-spacing: 0.2px;
-}
-
-.ministry__name {
-  font-size: 8px;
-  font-weight: 700;
-  color: #2f7d4f;
-}
-
-.ministry--lg .ministry__kingdom {
-  font-size: 9px;
-}
-
-.ministry--lg .ministry__name {
-  font-size: 11px;
-}
-
-.ajeer-logo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  line-height: 1;
-}
-
-.ajeer-logo__word {
-  font-size: 25px;
-  font-weight: 800;
-  color: #0d2b45;
-  letter-spacing: -0.5px;
-}
-
-.ajeer-logo__latin {
-  font-size: 6.5px;
-  letter-spacing: 3.4px;
-  color: #7c8592;
-  margin-top: 3px;
-  padding-right: 3px;
-}
-
-/* ---------------- card ---------------- */
+/* ---------------- Main Card Container ---------------- */
 .verify {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 36px 26px 46px;
   flex: 1;
-  padding: 26px 20px 44px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
 }
 
 .verify__card {
-  width: 100%;
-  max-width: 800px;
-  background: #fff;
-  border: 1px solid var(--card-border);
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  padding: 24px 28px 34px;
 }
 
+/* ---------------- Card Header Layout ---------------- */
 .card-head {
   display: flex;
   align-items: stretch;
-  border-bottom: 1px solid var(--line);
+  border: 1px solid var(--line);
+  background: #ffffff;
+  flex-direction: row-reverse;
 }
 
 .card-head__cell {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px 16px;
-}
-
-.card-head__cell + .card-head__cell {
-  border-inline-start: 1px solid var(--line);
+  padding: 20px 18px;
+  text-align: center;
 }
 
 .card-head__cell--brand {
-  flex: 0 0 244px;
+  flex: 0 0 36%;
 }
 
 .card-head__cell--title {
-  flex: 1 1 auto;
+  flex: 1 1 41%;
 }
 
 .card-head__cell--status {
-  flex: 0 0 186px;
+  flex: 0 0 23%;
+}
+
+.card-head__cell + .card-head__cell {
+  border-inline-end: 1px solid var(--line);
+  border-inline-start: none;
+}
+
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
+}
+
+.brand-ajeer-img {
+  height: 36px;
+  object-fit: contain;
+}
+
+.brand-star-img {
+  height: 38px;
+  object-fit: contain;
+}
+
+.hrsd-text-block {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  font-size: 10px;
+  font-weight: 700;
+  color: #166558;
+  line-height: 1.35;
 }
 
 .card-head__title {
-  margin: 0;
-  font-size: 21px;
+  font-size: 25px;
   font-weight: 700;
-  color: #12233a;
+  color: #111827;
   white-space: nowrap;
 }
 
 .status-ok {
-  color: var(--green);
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 700;
-  white-space: nowrap;
+  color: var(--green);
 }
 
 .card-note {
-  margin: 0;
-  padding: 38px 20px 42px;
   text-align: center;
-  font-size: 14.5px;
+  padding: 34px 16px 28px;
+  font-size: 16px;
   font-weight: 500;
-  color: var(--ink-3);
+  color: #2d343d;
 }
 
-/* ---------------- details table ---------------- */
+/* ---------------- Details Table ---------------- */
 .details {
   width: 100%;
   border-collapse: collapse;
@@ -204,70 +175,68 @@ a {
 .details th,
 .details td {
   border: 1px solid var(--line);
-  text-align: center;
+  padding: 13px 18px;
   vertical-align: middle;
 }
 
 .details__band {
   background: var(--band);
-  color: var(--ink);
-  font-size: 15px;
+  text-align: center;
+  font-size: 17px;
   font-weight: 700;
-  padding: 12px 10px;
+  color: #111827;
+  padding: 13px 18px;
 }
 
 .details__label {
-  background: var(--label);
-  color: var(--ink-4);
-  font-size: 14px;
+  background: var(--band);
+  width: 24%;
+  text-align: right;
+  font-size: 15.5px;
   font-weight: 500;
-  padding: 13px 10px;
+  color: #3f4650;
 }
 
 .details__value {
-  background: #fff;
-  color: var(--ink-2);
-  font-size: 14.5px;
+  background: #ffffff;
+  width: 26%;
+  text-align: center;
+  font-size: 16px;
   font-weight: 700;
-  padding: 13px 10px;
-  word-break: break-word;
+  color: #111827;
 }
 
-.details__value--latin {
+.ltr-val {
   direction: ltr;
-  unicode-bidi: isolate;
-  letter-spacing: 0.2px;
+  display: inline-block;
 }
 
-@media (min-width: 701px) {
-  .details__value--latin {
-    font-size: 14px;
-    white-space: nowrap;
-  }
-}
-
-/* ---------------- floating support button ---------------- */
+/* ---------------- Floating Chat Button (FAB) ---------------- */
 .fab {
   position: fixed;
-  left: 26px;
-  bottom: 26px;
-  width: 62px;
-  height: 62px;
-  border: 0;
+  left: 20px;
+  bottom: 20px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
-  background: var(--fab);
-  display: grid;
-  place-items: center;
+  background-color: var(--fab-green);
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(20, 60, 40, 0.22);
-  z-index: 60;
+  z-index: 999;
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 .fab:hover {
-  background: #359056;
+  transform: scale(1.04);
+  background-color: #357d4d;
 }
 
-/* ---------------- footer ---------------- */
+/* ---------------- Site Footer matching Screenshot 12 ---------------- */
 .site-footer {
   background: #fff;
   border-top: 1px solid var(--line-soft);
@@ -292,13 +261,13 @@ a {
   margin: 0 0 8px;
   font-size: 15px;
   font-weight: 700;
-  color: var(--ink);
+  color: #1b2538;
 }
 
 .footer-col a {
   display: block;
   font-size: 13.5px;
-  color: var(--ink-3);
+  color: #1b3a6b;
   line-height: 2.05;
 }
 
@@ -325,7 +294,6 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: 18px 26px;
-  padding-bottom: 30px;
   border-top: 1px solid var(--line-soft);
   margin-top: 26px;
   padding: 16px 0 22px;
@@ -339,6 +307,20 @@ a {
   flex-wrap: wrap;
 }
 
+.dga-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-right: 1px solid var(--line-soft);
+  padding-right: 20px;
+}
+
+.dga-registered {
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 600;
+}
+
 .dga {
   display: flex;
   align-items: center;
@@ -349,6 +331,7 @@ a {
   display: flex;
   flex-direction: column;
   line-height: 1.4;
+  text-align: right;
 }
 
 .dga__ar {
@@ -360,6 +343,7 @@ a {
 .dga__en {
   font-size: 7px;
   color: #6b7480;
+  text-align: left;
 }
 
 .takamol {
@@ -391,6 +375,12 @@ a {
   display: flex;
   flex-direction: column;
   line-height: 1.35;
+  text-align: right;
+}
+
+.tamkeen__dev {
+  font-size: 6px;
+  color: #6b7480;
 }
 
 .tamkeen__ar {
@@ -404,7 +394,7 @@ a {
   color: #6b7480;
 }
 
-/* ---------------- mobile ---------------- */
+/* ---------------- Mobile Responsive ---------------- */
 @media (max-width: 700px) {
   .site-header {
     height: 46px;
@@ -416,6 +406,7 @@ a {
   }
 
   .verify__card {
+    padding: 12px 10px 16px;
     border-radius: 6px;
     overflow: hidden;
   }
@@ -438,14 +429,12 @@ a {
   .card-head__cell + .card-head__cell {
     border-inline-start: 0;
     border-top: 1px solid var(--line);
+    border-inline-end: none;
   }
 
   .brand-lockup {
-    gap: 14px;
-  }
-
-  .ajeer-logo__word {
-    font-size: 30px;
+    justify-content: center;
+    gap: 12px;
   }
 
   .card-head__title {
@@ -511,7 +500,13 @@ a {
 
   .footer-cols {
     flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
     gap: 20px;
+  }
+
+  .footer-col {
+    width: 100%;
   }
 
   .footer-col__title {
@@ -526,6 +521,12 @@ a {
 
   .footer-badges__partners {
     gap: 16px;
+    margin-left: auto;
+  }
+
+  .dga-wrap {
+    border-right: none;
+    padding-right: 0;
   }
 
   .tamkeen {

@@ -1,324 +1,171 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 
-/* ----------------------------------------------------------------
-   بيانات التصريح — yahan backend / API ka data pass karein.
------------------------------------------------------------------ */
-const permit = {
-  status: "ساري / فعال",
-  successMessage: "تم التحقق من التصريح بنجاح",
+// اپنی تصاویر کے پاتھ یہاں درست کر لیں
+import ajeerLogoImg from "./assets/ajeer-logo.png";
+import hrsdStarImg from "./assets/hrsd-star.png";
 
-  permitNumber: "TW0592947",
-  permitType: "تصريح تعاقد أجير",
-  permitStartDate: "2026-11-08",
-  permitEndDate: "2027-02-07",
-
-  workerName: "ZAKIR HUSSAIN ABDUL QADIR",
-  workerId: "2458147978",
-  nationality: "باكستان",
-  profession: "سائق شاحنة ثقيلة",
-  gender: "ذكر",
-  birthDate: "1993-05-13",
-
-  establishmentNumber: "4-8462574",
-  establishmentName: "مؤسسة الهدف الاحمر للنقليات",
-};
-
-/* ----------------------------------------------------------------
-   Logos (SVG approximations — replace with official files if needed)
------------------------------------------------------------------ */
-function MinistryMark({ size = 26 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden="true">
-      <path
-        d="M32 3c3.4 8.6 9.6 13 9.6 21.4S35.4 39.6 32 44c-3.4-4.4-9.6-11.2-9.6-19.6S28.6 11.6 32 3z"
-        fill="#f2821d"
-      />
-      <path
-        d="M32 61c-3.4-8.6-9.6-13-9.6-21.4S28.6 24.4 32 20c3.4 4.4 9.6 11.2 9.6 19.6S35.4 52.4 32 61z"
-        fill="#1f9d61"
-      />
-      <path
-        d="M3 32c8.6-3.4 13-9.6 21.4-9.6S39.6 28.6 44 32c-4.4 3.4-11.2 9.6-19.6 9.6S11.6 35.4 3 32z"
-        fill="#2f8f4e"
-        opacity="0.92"
-      />
-      <path
-        d="M61 32c-8.6 3.4-13 9.6-21.4 9.6S24.4 35.4 20 32c4.4-3.4 11.2-9.6 19.6-9.6S52.4 28.6 61 32z"
-        fill="#86c440"
-        opacity="0.95"
-      />
-    </svg>
-  );
-}
-
-function MinistryLockup({ size = 26, large = false }) {
-  return (
-    <div className={`ministry${large ? " ministry--lg" : ""}`}>
-      <MinistryMark size={size} />
-      <div className="ministry__text">
-        <span className="ministry__kingdom">المملكة العربية السعودية</span>
-        <span className="ministry__name">الموارد البشرية والتنمية الاجتماعية</span>
-      </div>
-    </div>
-  );
-}
-
-function AjeerLogo({ wordSize = 25, latin = true }) {
-  return (
-    <div className="ajeer-logo">
-      <span className="ajeer-logo__word" style={{ fontSize: wordSize }}>
-        أجير
-      </span>
-      {latin && <span className="ajeer-logo__latin">AJEER</span>}
-    </div>
-  );
-}
-
-function TakamolLogo() {
-  return (
-    <div className="takamol">
-      <span className="takamol__ar">تكامل</span>
-      <span className="takamol__en">Takamol</span>
-    </div>
-  );
-}
-
-function TamkeenLogo() {
-  return (
-    <div className="tamkeen">
-      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M2 12h6l3-8 4 16 3-8h4" fill="none" stroke="#e07a1f" strokeWidth="2" />
-        <circle cx="12" cy="12" r="10.5" fill="none" stroke="#d8dde3" strokeWidth="1" />
-      </svg>
-      <div className="tamkeen__text">
-        <span className="tamkeen__ar">تمكين للتقنيات</span>
-        <span className="tamkeen__en">Tamkeen Technologies</span>
-      </div>
-    </div>
-  );
-}
-
-function DgaBadge() {
-  return (
-    <div className="dga">
-      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
-        <rect x="2" y="2" width="9" height="9" fill="#0f7d6b" />
-        <rect x="15" y="2" width="9" height="9" fill="#2f9e6d" />
-        <rect x="2" y="15" width="9" height="9" fill="#0f7d6b" />
-        <rect x="15" y="15" width="4" height="4" fill="#2f9e6d" />
-        <rect x="20" y="20" width="4" height="4" fill="#0f7d6b" />
-      </svg>
-      <div className="dga__text">
-        <span className="dga__ar">هيئة الحكومة الرقمية</span>
-        <span className="dga__en">Digital Government Authority</span>
-      </div>
-      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
-        <rect width="30" height="30" fill="#fff" stroke="#d8dde3" />
-        <g fill="#20303f">
-          <rect x="3" y="3" width="6" height="6" />
-          <rect x="21" y="3" width="6" height="6" />
-          <rect x="3" y="21" width="6" height="6" />
-          <rect x="12" y="12" width="3" height="3" />
-          <rect x="18" y="12" width="3" height="3" />
-          <rect x="12" y="18" width="3" height="3" />
-          <rect x="21" y="18" width="3" height="3" />
-          <rect x="15" y="4" width="2" height="2" />
-          <rect x="5" y="14" width="2" height="2" />
-        </g>
-      </svg>
-    </div>
-  );
-}
-
-/* ----------------------------------------------------------------
-   Small building blocks
------------------------------------------------------------------ */
-function Band({ children }) {
-  return (
-    <tr>
-      <th className="details__band" colSpan={4} scope="colgroup">
-        {children}
-      </th>
-    </tr>
-  );
-}
-
-function Field({ label, value, latin = false }) {
-  return (
-    <>
-      <td className="details__label">{label}</td>
-      <td className={`details__value${latin ? " details__value--latin" : ""}`}>
-        {value}
-      </td>
-    </>
-  );
-}
-
-function ChatFab() {
-  return (
-    <button className="fab" type="button" aria-label="الدعم والمساعدة">
-      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true">
-        <path
-          d="M13.6 5.2c-5.1 0-9.2 3.2-9.2 7.2 0 2.3 1.3 4.3 3.4 5.6l-.7 3 3.3-1.7c1 .3 2.1.4 3.2.4"
-          fill="none"
-          stroke="#fff"
-          strokeWidth="1.9"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M17.6 12.4c-4.1 0-7.4 2.6-7.4 5.8s3.3 5.8 7.4 5.8c.9 0 1.8-.1 2.6-.4l3.1 1.6-.7-2.8c1.8-1 2.9-2.6 2.9-4.2 0-3.2-3.3-5.8-7.4-5.8z"
-          fill="none"
-          stroke="#fff"
-          strokeWidth="1.9"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </button>
-  );
-}
-
-function FooterLink({ children }) {
-  return (
-    <a href="#top" onClick={(event) => event.preventDefault()}>
-      {children}
-    </a>
-  );
-}
-
-/* ----------------------------------------------------------------
-   Page
------------------------------------------------------------------ */
 export default function App() {
+  const [permitData] = useState({
+    status: "ساري / فعال",
+    permitNumber: "TW0592947",
+    permitType: "تصريح تعاقد أجير",
+    startDate: "2026-11-08",
+    endDate: "2027-02-07",
+    workerName: "ZAKIR HUSSAIN ABDUL QADIR",
+    idNumber: "2458147978",
+    nationality: "باكستان",
+    profession: "سائق شاحنة ثقيلة",
+    gender: "ذكر",
+    birthDate: "1993-05-13",
+    establishmentNumber: "4-8462574",
+    establishmentName: "مؤسسة الهدف الاحمر للنقليات",
+  });
+
   return (
-    <div className="ajeer-page" id="top">
+    <div className="page-wrapper" dir="rtl">
+      {/* Top Header */}
       <header className="site-header">
-        <div className="site-header__right">
-          <AjeerLogo wordSize={23} />
+        <div className="header-brand-right">
+          <img src={hrsdStarImg} alt="شعار الوزارة" style={{ height: "24px", objectFit: "contain" }} />
+          <div className="hrsd-top__text">
+            <span>الموارد البشرية</span>
+            <span>والتنمية الاجتماعية</span>
+          </div>
         </div>
-        <div className="site-header__left">
-          <MinistryLockup size={22} />
+
+        <div className="header-brand-left">
+          <img src={ajeerLogoImg} alt="أجير" style={{ height: "22px", objectFit: "contain" }} />
         </div>
       </header>
 
+      {/* Main Verification Card */}
       <main className="verify">
-        <section className="verify__card" aria-labelledby="page-title">
+        <div className="verify__card">
           <div className="card-head">
-            <div className="card-head__cell card-head__cell--brand">
-              <div className="brand-lockup">
-                <MinistryLockup size={38} large />
-                <AjeerLogo wordSize={34} />
-              </div>
+            <div className="card-head__cell card-head__cell--status">
+              <span className="status-ok">{permitData.status}</span>
             </div>
 
             <div className="card-head__cell card-head__cell--title">
-              <h1 className="card-head__title" id="page-title">
-                التحقق من تصريح أجير
-              </h1>
+              <h1 className="card-head__title">التحقق من تصريح أجير</h1>
             </div>
 
-            <div className="card-head__cell card-head__cell--status">
-              <span className="status-ok">{permit.status}</span>
+            <div className="card-head__cell card-head__cell--brand">
+              <div className="brand-lockup">
+                <div className="hrsd-text-block">
+                  <span>الموارد البشرية</span>
+                  <span>والتنمية الاجتماعية</span>
+                </div>
+                <img src={hrsdStarImg} alt="شعار الوزارة" className="brand-star-img" />
+                <img src={ajeerLogoImg} alt="أجير" className="brand-ajeer-img" />
+              </div>
             </div>
           </div>
 
-          <p className="card-note">{permit.successMessage}</p>
+          <p className="card-note">تم التحقق من التصريح بنجاح</p>
 
           <table className="details">
-            <colgroup>
-              <col style={{ width: "19%" }} />
-              <col style={{ width: "31%" }} />
-              <col style={{ width: "19%" }} />
-              <col style={{ width: "31%" }} />
-            </colgroup>
-
             <tbody>
-              <Band>بيانات التصريح</Band>
               <tr>
-                <Field label="رقم التصريح" value={permit.permitNumber} latin />
-                <Field label="نوع التصريح" value={permit.permitType} />
+                <th colSpan="4" className="details__band">بيانات التصريح</th>
               </tr>
               <tr>
-                <Field label="تاريخ بداية التصريح" value={permit.permitStartDate} />
-                <Field label="تاريخ نهاية التصريح" value={permit.permitEndDate} />
-              </tr>
-
-              <Band>بيانات العامل</Band>
-              <tr>
-                <Field label="اسم العامل" value={permit.workerName} latin />
-                <Field label="رقم الهوية / الإقامة" value={permit.workerId} />
+                <th className="details__label">رقم التصريح</th>
+                <td className="details__value"><span className="ltr-val">{permitData.permitNumber}</span></td>
+                <th className="details__label">نوع التصريح</th>
+                <td className="details__value">{permitData.permitType}</td>
               </tr>
               <tr>
-                <Field label="الجنسية" value={permit.nationality} />
-                <Field label="المهنة" value={permit.profession} />
-              </tr>
-              <tr>
-                <Field label="الجنس" value={permit.gender} />
-                <Field label="تاريخ الميلاد" value={permit.birthDate} />
+                <th className="details__label">تاريخ بداية التصريح</th>
+                <td className="details__value"><span className="ltr-val">{permitData.startDate}</span></td>
+                <th className="details__label">تاريخ نهاية التصريح</th>
+                <td className="details__value"><span className="ltr-val">{permitData.endDate}</span></td>
               </tr>
 
-              <Band>بيانات المنشأة</Band>
               <tr>
-                <Field label="رقم المنشأة" value={permit.establishmentNumber} />
-                <Field label="اسم المنشأة" value={permit.establishmentName} />
+                <th colSpan="4" className="details__band">بيانات العامل</th>
+              </tr>
+              <tr>
+                <th className="details__label">اسم العامل</th>
+                <td className="details__value"><span className="ltr-val">{permitData.workerName}</span></td>
+                <th className="details__label">رقم الهوية / الإقامة</th>
+                <td className="details__value"><span className="ltr-val">{permitData.idNumber}</span></td>
+              </tr>
+              <tr>
+                <th className="details__label">الجنسية</th>
+                <td className="details__value">{permitData.nationality}</td>
+                <th className="details__label">المهنة</th>
+                <td className="details__value">{permitData.profession}</td>
+              </tr>
+              <tr>
+                <th className="details__label">الجنس</th>
+                <td className="details__value">{permitData.gender}</td>
+                <th className="details__label">تاريخ الميلاد</th>
+                <td className="details__value"><span className="ltr-val">{permitData.birthDate}</span></td>
+              </tr>
+
+              <tr>
+                <th colSpan="4" className="details__band">بيانات المنشأة</th>
+              </tr>
+              <tr>
+                <th className="details__label">رقم المنشأة</th>
+                <td className="details__value"><span className="ltr-val">{permitData.establishmentNumber}</span></td>
+                <th className="details__label">اسم المنشأة</th>
+                <td className="details__value">{permitData.establishmentName}</td>
               </tr>
             </tbody>
           </table>
-        </section>
+        </div>
       </main>
 
+      {/* Floating Support Button (FAB) */}
+      <button type="button" className="fab" aria-label="المساعدة والدعم">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#ffffff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M16.5 7C10.7 7 6 11.1 6 16.2C6 18.6 7.1 20.8 8.8 22.4L7.6 26.2L11.8 24.8C13.3 25.3 14.9 25.5 16.5 25.5C17.2 25.5 17.9 25.4 18.5 25.3" />
+          <path d="M26.8 18.2C26.9 17.5 27 16.9 27 16.2C27 11.1 22.3 7 16.5 7" />
+          <path d="M23.5 18.5C19.6 18.5 16.5 21.1 16.5 24.3C16.5 27.5 19.6 30.1 23.5 30.1C24.7 30.1 25.8 29.8 26.8 29.4L29.8 30.4L29 27.7C30 26.7 30.5 25.6 30.5 24.3C30.5 21.1 27.4 18.5 23.5 18.5Z" />
+        </svg>
+      </button>
+
+      {/* Site Footer matching Screenshot 12 */}
       <footer className="site-footer">
         <div className="site-footer__inner">
           <div className="footer-cols">
             <div className="footer-col">
-              <h2 className="footer-col__title">أجير</h2>
-              <FooterLink>عن أجير</FooterLink>
-              <FooterLink>خدمات أجير</FooterLink>
+              <h3 className="footer-col__title">أجير</h3>
+              <a href="#about">عن أجير</a>
+              <a href="#services">خدمات أجير</a>
             </div>
 
             <div className="footer-col">
-              <h2 className="footer-col__title">الدعم</h2>
-              <FooterLink>الدعم و المساعدة</FooterLink>
-              <FooterLink>الأسئلة الشائعة</FooterLink>
+              <h3 className="footer-col__title">الدعم</h3>
+              <a href="#support">الدعم و المساعدة</a>
+              <a href="#faq">الأسئلة الشائعة</a>
             </div>
 
             <div className="footer-col">
-              <h2 className="footer-col__title">الشروط و الخصوصية</h2>
-              <FooterLink>الشروط والأحكام</FooterLink>
-              <FooterLink>سياسة الخصوصية</FooterLink>
+              <h3 className="footer-col__title">الشروط و الخصوصية</h3>
+              <a href="#terms">الشروط والأحكام</a>
+              <a href="#privacy">سياسة الخصوصية</a>
             </div>
 
             <div className="footer-col">
-              <h2 className="footer-col__title">تواصل معنا</h2>
+              <h3 className="footer-col__title">تواصل معنا</h3>
               <div className="footer-social">
-                <a href="#top" aria-label="هاتف" onClick={(e) => e.preventDefault()}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                    <path
-                      d="M6.6 3h2.5l1.6 4-2 1.4a12 12 0 0 0 5.9 5.9l1.4-2 4 1.6v2.5A2.6 2.6 0 0 1 17.4 19C9.9 18.6 5.4 14.1 5 6.6A2.6 2.6 0 0 1 6.6 3z"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.7"
-                      strokeLinejoin="round"
-                    />
+                <a href="#phone" aria-label="Phone">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z" />
                   </svg>
                 </a>
-                <a href="#top" aria-label="تليجرام" onClick={(e) => e.preventDefault()}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-                    <path
-                      d="M21 4L3 11.2l4.6 1.5L9 19l2.8-3.4 4 2.8L21 4z"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.7"
-                      strokeLinejoin="round"
-                    />
+                <a href="#telegram" aria-label="Telegram">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21.9 3.6c-.3-.3-.8-.4-1.2-.2L2.6 10.6c-.5.2-.8.6-.8 1.1 0 .5.3.9.8 1.1l4.7 1.7 1.8 5.6c.1.4.5.7.9.8h.2c.4 0 .7-.2.9-.5l2.7-3.4 4.9 3.6c.2.2.5.3.8.3.2 0 .4 0 .6-.1.4-.2.7-.5.8-.9l3-15.1c.1-.5-.1-1-.4-1.3zM9.8 14.3l8.6-7.6-6.8 8.7-.3 3.1-1.5-4.2z" />
                   </svg>
                 </a>
-                <a href="#top" aria-label="إكس" onClick={(e) => e.preventDefault()}>
-                  <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true">
-                    <path
-                      d="M4 3l7.2 9.3L4.4 21h2.3l5.6-6.9 5.2 6.9H21l-7.5-9.8L19.8 3h-2.3l-5.1 6.3L7.9 3H4z"
-                      fill="currentColor"
-                    />
+                <a href="#x" aria-label="X">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                   </svg>
                 </a>
               </div>
@@ -326,20 +173,50 @@ export default function App() {
           </div>
 
           <div className="footer-badges">
-            <div className="footer-badges__dga">
-              <DgaBadge />
+            <div className="dga-wrap">
+              <div className="dga">
+                <div className="dga__text">
+                  <span className="dga__ar">هيئة الحكومة الرقمية</span>
+                  <span className="dga__en">Digital Government Authority</span>
+                </div>
+                <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+                  <path d="M20 4L34 18L20 32L6 18L20 4Z" stroke="#18806B" strokeWidth="2.2" />
+                  <path d="M20 10L28 18L20 26L12 18L20 10Z" stroke="#22A087" strokeWidth="2" />
+                  <path d="M10 29L20 38L30 29" stroke="#1F3B70" strokeWidth="2.2" strokeLinecap="round" />
+                </svg>
+              </div>
+              <span className="dga-registered">مسجل لدى</span>
             </div>
 
             <div className="footer-badges__partners">
-              <TamkeenLogo />
-              <TakamolLogo />
-              <MinistryLockup size={26} />
+              <div className="tamkeen">
+                <div className="tamkeen__text">
+                  <span className="tamkeen__dev">Developed and Powered by</span>
+                  <span className="tamkeen__ar">تمكين للتقنيات</span>
+                  <span className="tamkeen__en">Tamkeen Technologies</span>
+                </div>
+                <svg width="28" height="20" viewBox="0 0 36 24" fill="none">
+                  <path d="M4 4L14 12L4 20" stroke="#F59E0B" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M18 4L28 12L18 20" stroke="#DC2626" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+
+              <div className="takamol">
+                <span className="takamol__ar">تكامل</span>
+                <span className="takamol__en">Takamol</span>
+              </div>
+
+              <div className="hrsd-top-lockup" style={{ gap: "8px" }}>
+                <div className="hrsd-top__text" style={{ fontSize: "9.5px" }}>
+                  <span>الموارد البشرية</span>
+                  <span>والتنمية الاجتماعية</span>
+                </div>
+                <img src={hrsdStarImg} alt="شعار الوزارة" style={{ height: "30px", objectFit: "contain" }} />
+              </div>
             </div>
           </div>
         </div>
       </footer>
-
-      <ChatFab />
     </div>
   );
 }
