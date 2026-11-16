@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 
 // اپنی تصاویر کے پاتھ یہاں درست کر لیں
@@ -6,28 +6,83 @@ import ajeerLogoImg from "./assets/ajeer-logo.png";
 import hrsdStarImg from "./assets/hrsd-star.png";
 
 export default function App() {
-  const [permitData] = useState({
-    status: "ساري / فعال",
-    permitNumber: "TW0592947",
-    permitType: "تصريح تعاقد أجير",
-    startDate: "2026-11-08",
-    endDate: "2027-02-07",
-    workerName: "ZAKIR HUSSAIN ABDUL QADIR",
-    idNumber: "2458147978",
-    nationality: "باكستان",
-    profession: "سائق شاحنة ثقيلة",
-    gender: "ذكر",
-    birthDate: "1993-05-13",
-    establishmentNumber: "4-8462574",
-    establishmentName: "مؤسسة الهدف الاحمر للنقليات",
-  });
+  const [permitData, setPermitData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    const pathSegments = window.location.pathname.split("/");
+    const permitId = pathSegments[pathSegments.length - 1]; // مثال کے طور پر 'c3ae6541' یا '123'
+
+    if (permitId && permitId !== "" && permitId !== "v") {
+      fetch(`https://ajeerbackend.vercel.app/v/${permitId}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Data not found");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data && Object.keys(data).length > 0) {
+            setPermitData({
+              status: data.status || "ساري / فعال",
+              permitNumber: data.permitNo || data.permitNumber || "TW0592947",
+              permitType: data.title || data.permitType || "تصريح تعاقد أجير",
+              startDate: data.startDate || "2026-11-08",
+              endDate: data.endDate || "2027-02-07",
+              workerName: data.workerName || "ZAKIR HUSSAIN ABDUL QADIR",
+              idNumber: data.idNumber || "2458147978",
+              nationality: data.nationality || "باكستان",
+              profession: data.profession || "سائق شاحنة ثقيلة",
+              gender: data.gender || "ذكر",
+              birthDate: data.birthDate || "1993-05-13",
+              establishmentNumber: data.providerCr || data.establishmentNumber || "4-8462574",
+              establishmentName: data.providerCompany || data.establishmentName || "مؤسسة الهدف الاحمر للنقليات",
+            });
+            setError(false);
+          } else {
+            setError(true);
+          }
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error("Error fetching permit data:", err);
+          setError(true);
+          setLoading(false);
+        });
+    } else {
+      setError(true);
+      setLoading(false);
+    }
+  }, []);
+
+  // اگر ڈیٹا لوڈ ہو رہا ہو
+  if (loading) {
+    return (
+      <div className="page-wrapper" dir="rtl" style={{ justifyContent: "center", alignItems: "center" }}>
+        <h2>جاري التحميل...</h2>
+      </div>
+    );
+  }
+
+  // اگر ڈیٹا نہ ملے یا ایرور ہو
+  if (error || !permitData) {
+    return (
+      <div className="page-wrapper" dir="rtl" style={{ justifyContent: "center", alignItems: "center", textAlign: "center", padding: "20px" }}>
+        <div style={{ background: "#fff", padding: "40px", borderRadius: "8px", border: "1px solid #d6dbde", maxWidth: "500px", width: "100%" }}>
+          <h2 style={{ color: "#dc2626", marginBottom: "15px" }}>عذراً، لم يتم العثور على التصريح</h2>
+          <p style={{ color: "#4b5563", fontSize: "16px" }}>رقم التصريح غير موجود أو حدث خطأ أثناء جلب البيانات.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="page-wrapper" dir="rtl">
       {/* Top Header */}
       <header className="site-header">
         <div className="header-brand-right">
-          <img src={hrsdStarImg} alt="شعار الوزارة" style={{ height: "24px", objectFit: "contain" }} />
+          <img src={hrsdStarImg} alt="شعار الوزارة" className="top-hrsd-star" />
           <div className="hrsd-top__text">
             <span>الموارد البشرية</span>
             <span>والتنمية الاجتماعية</span>
@@ -35,7 +90,7 @@ export default function App() {
         </div>
 
         <div className="header-brand-left">
-          <img src={ajeerLogoImg} alt="أجير" style={{ height: "22px", objectFit: "contain" }} />
+          <img src={ajeerLogoImg} alt="أجير" className="top-ajeer-logo" />
         </div>
       </header>
 
@@ -43,23 +98,26 @@ export default function App() {
       <main className="verify">
         <div className="verify__card">
           <div className="card-head">
-            <div className="card-head__cell card-head__cell--status">
-              <span className="status-ok">{permitData.status}</span>
-            </div>
-
-            <div className="card-head__cell card-head__cell--title">
-              <h1 className="card-head__title">التحقق من تصريح أجير</h1>
-            </div>
-
+            {/* 1. First Box (Right): Brand Section (Ajeer, Star & Text) */}
             <div className="card-head__cell card-head__cell--brand">
               <div className="brand-lockup">
+                <img src={ajeerLogoImg} alt="أجير" className="brand-ajeer-img" />
+                <img src={hrsdStarImg} alt="شعار الوزارة" className="brand-star-img" />
                 <div className="hrsd-text-block">
                   <span>الموارد البشرية</span>
                   <span>والتنمية الاجتماعية</span>
                 </div>
-                <img src={hrsdStarImg} alt="شعار الوزارة" className="brand-star-img" />
-                <img src={ajeerLogoImg} alt="أجير" className="brand-ajeer-img" />
               </div>
+            </div>
+
+            {/* 2. Second Box (Center): Title Section */}
+            <div className="card-head__cell card-head__cell--title">
+              <h1 className="card-head__title">التحقق من تصريح أجير</h1>
+            </div>
+
+            {/* 3. Third Box (Left): Status Section */}
+            <div className="card-head__cell card-head__cell--status">
+              <span className="status-ok">{permitData.status}</span>
             </div>
           </div>
 
@@ -128,7 +186,7 @@ export default function App() {
         </svg>
       </button>
 
-      {/* Site Footer matching Screenshot 12 */}
+      {/* Site Footer */}
       <footer className="site-footer">
         <div className="site-footer__inner">
           <div className="footer-cols">
@@ -153,65 +211,87 @@ export default function App() {
             <div className="footer-col">
               <h3 className="footer-col__title">تواصل معنا</h3>
               <div className="footer-social">
-                <a href="#phone" aria-label="Phone">
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z" />
+                <a href="#x" aria-label="X">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                   </svg>
                 </a>
                 <a href="#telegram" aria-label="Telegram">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M21.9 3.6c-.3-.3-.8-.4-1.2-.2L2.6 10.6c-.5.2-.8.6-.8 1.1 0 .5.3.9.8 1.1l4.7 1.7 1.8 5.6c.1.4.5.7.9.8h.2c.4 0 .7-.2.9-.5l2.7-3.4 4.9 3.6c.2.2.5.3.8.3.2 0 .4 0 .6-.1.4-.2.7-.5.8-.9l3-15.1c.1-.5-.1-1-.4-1.3zM9.8 14.3l8.6-7.6-6.8 8.7-.3 3.1-1.5-4.2z" />
                   </svg>
                 </a>
-                <a href="#x" aria-label="X">
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                <a href="#phone" aria-label="Phone">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z" />
                   </svg>
                 </a>
               </div>
             </div>
           </div>
 
-          <div className="footer-badges">
-            <div className="dga-wrap">
-              <div className="dga">
-                <div className="dga__text">
-                  <span className="dga__ar">هيئة الحكومة الرقمية</span>
-                  <span className="dga__en">Digital Government Authority</span>
-                </div>
-                <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
-                  <path d="M20 4L34 18L20 32L6 18L20 4Z" stroke="#18806B" strokeWidth="2.2" />
-                  <path d="M20 10L28 18L20 26L12 18L20 10Z" stroke="#22A087" strokeWidth="2" />
-                  <path d="M10 29L20 38L30 29" stroke="#1F3B70" strokeWidth="2.2" strokeLinecap="round" />
-                </svg>
-              </div>
-              <span className="dga-registered">مسجل لدى</span>
-            </div>
-
-            <div className="footer-badges__partners">
-              <div className="tamkeen">
-                <div className="tamkeen__text">
-                  <span className="tamkeen__dev">Developed and Powered by</span>
-                  <span className="tamkeen__ar">تمكين للتقنيات</span>
-                  <span className="tamkeen__en">Tamkeen Technologies</span>
-                </div>
-                <svg width="28" height="20" viewBox="0 0 36 24" fill="none">
-                  <path d="M4 4L14 12L4 20" stroke="#F59E0B" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M18 4L28 12L18 20" stroke="#DC2626" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-
-              <div className="takamol">
-                <span className="takamol__ar">تكامل</span>
-                <span className="takamol__en">Takamol</span>
-              </div>
-
-              <div className="hrsd-top-lockup" style={{ gap: "8px" }}>
-                <div className="hrsd-top__text" style={{ fontSize: "9.5px" }}>
+          <div className="footer-logos">
+            <div className="footer-logos__group-right">
+              <div className="footer-hrsd">
+                <img src={hrsdStarImg} alt="شعار الوزارة" className="footer-hrsd__star" />
+                <div className="footer-hrsd__text">
                   <span>الموارد البشرية</span>
                   <span>والتنمية الاجتماعية</span>
                 </div>
-                <img src={hrsdStarImg} alt="شعار الوزارة" style={{ height: "30px", objectFit: "contain" }} />
+              </div>
+
+              <div className="footer-takamol">
+                <span className="footer-takamol__ar">تكامل</span>
+                <span className="footer-takamol__en">Takamol</span>
+              </div>
+            </div>
+
+            <div className="footer-tamkeen">
+              <svg width="32" height="22" viewBox="0 0 38 26" fill="none">
+                <path d="M18 4L28 13L18 22" stroke="#F59E0B" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M6 4L16 13L6 22" stroke="#E11D48" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <div className="footer-tamkeen__text">
+                <span className="footer-tamkeen__dev">Developed and Powered by</span>
+                <span className="footer-tamkeen__ar">تمكين للتقنيات</span>
+                <span className="footer-tamkeen__en">Tamkeen Technologies</span>
+              </div>
+            </div>
+
+            <div className="footer-divider"></div>
+
+            <div className="footer-dga-wrap">
+              <span className="footer-dga-reg">مسجل لدى</span>
+              <div className="footer-dga">
+                <svg width="38" height="44" viewBox="0 0 44 50" fill="none">
+                  <path d="M22 4V32" stroke="#18806B" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M22 10L15 16V22" stroke="#22A087" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M22 10L29 16V22" stroke="#22A087" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M22 18L11 25V30" stroke="#18806B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M22 18L33 25V30" stroke="#18806B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx="22" cy="4" r="2" fill="#22A087" />
+                  <circle cx="15" cy="22" r="1.8" fill="#18806B" />
+                  <circle cx="29" cy="22" r="1.8" fill="#18806B" />
+                  <circle cx="11" cy="30" r="1.8" fill="#22A087" />
+                  <circle cx="33" cy="30" r="1.8" fill="#22A087" />
+                  <path d="M10 44L34 34" stroke="#1B3A6B" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M34 44L10 34" stroke="#1B3A6B" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+
+                <div className="footer-dga__labels">
+                  <div className="footer-dga__row">
+                    <span className="footer-dga__ar">هيئة</span>
+                    <span className="footer-dga__en">Digital</span>
+                  </div>
+                  <div className="footer-dga__row">
+                    <span className="footer-dga__ar">الحكومة</span>
+                    <span className="footer-dga__en">Government</span>
+                  </div>
+                  <div className="footer-dga__row">
+                    <span className="footer-dga__ar">الرقمية</span>
+                    <span className="footer-dga__en">Authority</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

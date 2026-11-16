@@ -11,7 +11,7 @@
   --navy: #1b2538;
 }
 
-* {
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -39,7 +39,7 @@ a {
 .site-header {
   background: #ffffff;
   height: 54px;
-  padding: 0 24px;
+  padding: 0 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -57,14 +57,24 @@ a {
   align-items: center;
 }
 
+.top-hrsd-star {
+  height: 38px;
+  object-fit: contain;
+}
+
+.top-ajeer-logo {
+  height: 36px;
+  object-fit: contain;
+}
+
 .hrsd-top__text {
   display: flex;
   flex-direction: column;
   text-align: right;
-  font-size: 8.5px;
+  font-size: 8px;
   font-weight: 700;
   color: #166558;
-  line-height: 1.35;
+  line-height: 1.25;
 }
 
 /* ---------------- Main Card Container ---------------- */
@@ -82,13 +92,13 @@ a {
   padding: 24px 28px 34px;
 }
 
-/* ---------------- Card Header Layout ---------------- */
+/* ---------------- Card Header Layout (Desktop) ---------------- */
 .card-head {
   display: flex;
   align-items: stretch;
   border: 1px solid var(--line);
   background: #ffffff;
-  flex-direction: row-reverse;
+  flex-direction: row; /* dir="rtl" ہونے کی وجہ سے اب پہلا ڈبہ دائیں اور آخری بائیں جائے گا */
 }
 
 .card-head__cell {
@@ -101,36 +111,40 @@ a {
 
 .card-head__cell--brand {
   flex: 0 0 36%;
+  order: 1;
 }
 
 .card-head__cell--title {
   flex: 1 1 41%;
+  order: 2;
 }
 
 .card-head__cell--status {
   flex: 0 0 23%;
+  order: 3;
 }
 
 .card-head__cell + .card-head__cell {
-  border-inline-end: 1px solid var(--line);
-  border-inline-start: none;
+  border-inline-start: 1px solid var(--line);
 }
 
+/* Brand Lockup: RTL میں پہلے أجير، پھر اسٹار، پھر ٹیکسٹ */
 .brand-lockup {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   gap: 8px;
+  flex-direction: row;
 }
 
 .brand-ajeer-img {
-  height: 36px;
+  height: 58px;
   object-fit: contain;
 }
 
 .brand-star-img {
-  height: 38px;
+  height: 68px;
   object-fit: contain;
 }
 
@@ -236,39 +250,41 @@ a {
   background-color: #357d4d;
 }
 
-/* ---------------- Site Footer matching Screenshot 12 ---------------- */
+/* ---------------- Site Footer ---------------- */
 .site-footer {
-  background: #fff;
+  background: #ffffff;
   border-top: 1px solid var(--line-soft);
   margin-top: auto;
 }
 
 .site-footer__inner {
-  max-width: 1080px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 32px 26px 0;
+  padding: 28px 36px 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
 }
 
 .footer-cols {
   display: flex;
-  flex-wrap: wrap;
   align-items: flex-start;
-  justify-content: space-between;
-  gap: 26px 40px;
+  gap: 48px;
 }
 
 .footer-col__title {
   margin: 0 0 8px;
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 700;
   color: #1b2538;
 }
 
 .footer-col a {
   display: block;
-  font-size: 13.5px;
-  color: #1b3a6b;
-  line-height: 2.05;
+  font-size: 13px;
+  color: #4b5563;
+  line-height: 2;
 }
 
 .footer-col a:hover {
@@ -278,7 +294,7 @@ a {
 .footer-social {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   padding-top: 6px;
 }
 
@@ -287,154 +303,277 @@ a {
   display: inline-flex;
 }
 
-.footer-badges {
-  direction: ltr;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px 26px;
-  border-top: 1px solid var(--line-soft);
-  margin-top: 26px;
-  padding: 16px 0 22px;
-}
-
-.footer-badges__partners {
-  direction: ltr;
+.footer-logos {
   display: flex;
   align-items: center;
-  gap: 26px;
-  flex-wrap: wrap;
+  gap: 28px;
 }
 
-.dga-wrap {
+.footer-logos__group-right {
   display: flex;
   align-items: center;
-  gap: 10px;
-  border-right: 1px solid var(--line-soft);
-  padding-right: 20px;
+  gap: 28px;
 }
 
-.dga-registered {
-  font-size: 11px;
-  color: #6b7280;
-  font-weight: 600;
-}
-
-.dga {
+.footer-hrsd {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
 }
 
-.dga__text {
+.footer-hrsd__star {
+  height: 44px;
+  object-fit: contain;
+}
+
+.footer-hrsd__text {
   display: flex;
   flex-direction: column;
-  line-height: 1.4;
+  text-align: right;
+  font-size: 10px;
+  font-weight: 700;
+  color: #166558;
+  line-height: 1.3;
+}
+
+.footer-takamol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.footer-takamol__ar {
+  font-size: 23px;
+  font-weight: 800;
+  color: #2e2466;
+  letter-spacing: -0.5px;
+}
+
+.footer-takamol__en {
+  font-size: 8.5px;
+  font-weight: 700;
+  color: #2e2466;
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+.footer-tamkeen {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-tamkeen__text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  line-height: 1.25;
+}
+
+.footer-tamkeen__dev {
+  font-size: 6px;
+  color: #6b7280;
+}
+
+.footer-tamkeen__ar {
+  font-size: 10px;
+  font-weight: 700;
+  color: #374151;
+}
+
+.footer-tamkeen__en {
+  font-size: 7.5px;
+  color: #6b7280;
+}
+
+.footer-divider {
+  width: 1px;
+  height: 42px;
+  background-color: var(--line);
+}
+
+.footer-dga-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-dga-reg {
+  font-size: 11px;
+  color: #9ca3af;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.footer-dga {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-dga__labels {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.footer-dga__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+  line-height: 1.2;
+}
+
+.footer-dga__ar {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #1f2937;
   text-align: right;
 }
 
-.dga__ar {
-  font-size: 9px;
-  font-weight: 700;
-  color: #2f3a49;
-}
-
-.dga__en {
-  font-size: 7px;
-  color: #6b7480;
+.footer-dga__en {
+  font-size: 7.5px;
+  font-weight: 600;
+  color: #374151;
   text-align: left;
 }
 
-.takamol {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  line-height: 1.1;
-}
-
-.takamol__ar {
-  font-size: 17px;
-  font-weight: 800;
-  color: #1b3a6b;
-}
-
-.takamol__en {
-  font-size: 7px;
-  color: #1b3a6b;
-  letter-spacing: 0.6px;
-}
-
-.tamkeen {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.tamkeen__text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.35;
-  text-align: right;
-}
-
-.tamkeen__dev {
-  font-size: 6px;
-  color: #6b7480;
-}
-
-.tamkeen__ar {
-  font-size: 8.5px;
-  font-weight: 700;
-  color: #2f3a49;
-}
-
-.tamkeen__en {
-  font-size: 7px;
-  color: #6b7480;
-}
-
 /* ---------------- Mobile Responsive ---------------- */
+@media (max-width: 960px) {
+  .site-footer__inner {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 24px 18px 20px;
+  }
+
+  .footer-cols {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    border-bottom: 1px solid var(--line-soft);
+    padding-bottom: 22px;
+  }
+
+  .footer-logos {
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 8px;
+    gap: 10px;
+  }
+
+  .footer-logos__group-right {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .footer-hrsd__star {
+    height: 48px;
+  }
+
+  .footer-hrsd__text {
+    font-size: 11px;
+  }
+
+  .footer-takamol__ar {
+    font-size: 26px;
+  }
+
+  .footer-takamol__en {
+    font-size: 9.5px;
+  }
+
+  .footer-tamkeen {
+    display: none;
+  }
+
+  .footer-divider {
+    height: 85px;
+  }
+
+  .footer-dga-wrap {
+    flex: 1;
+    justify-content: center;
+    gap: 8px;
+  }
+}
+
 @media (max-width: 700px) {
   .site-header {
-    height: 46px;
-    padding: 0 14px;
+    height: 50px;
+    padding: 0 12px;
+  }
+
+  .top-hrsd-star {
+    height: 36px;
+  }
+
+  .top-ajeer-logo {
+    height: 34px;
   }
 
   .verify {
-    padding: 12px 8px 26px;
+    padding: 12px 6px 26px;
   }
 
   .verify__card {
-    padding: 12px 10px 16px;
-    border-radius: 6px;
-    overflow: hidden;
+    padding: 10px 10px 18px;
+    border-radius: 0;
   }
 
   .card-head {
     flex-direction: column;
   }
 
-  .card-head__cell {
+  .card-head__cell--brand {
+    order: 1;
+    flex: 0 0 auto;
     width: 100%;
-    padding: 20px 12px 18px;
+    padding: 22px 14px 20px;
+    border-bottom: 1px solid var(--line);
   }
 
-  .card-head__cell--brand,
-  .card-head__cell--title,
-  .card-head__cell--status {
+  .card-head__cell--title {
+    order: 2;
     flex: 0 0 auto;
+    width: 100%;
+    padding: 20px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .card-head__cell--status {
+    order: 3;
+    flex: 0 0 auto;
+    width: 100%;
+    padding: 18px 14px;
   }
 
   .card-head__cell + .card-head__cell {
-    border-inline-start: 0;
-    border-top: 1px solid var(--line);
-    border-inline-end: none;
+    border-inline-start: none;
   }
 
   .brand-lockup {
+    flex-direction: row;
     justify-content: center;
-    gap: 12px;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .brand-ajeer-img {
+    height: 54px;
+  }
+
+  .brand-star-img {
+    height: 56px;
+  }
+
+  .hrsd-text-block {
+    font-size: 11px;
+    line-height: 1.35;
   }
 
   .card-head__title {
@@ -447,8 +586,8 @@ a {
   }
 
   .card-note {
-    padding: 22px 14px 24px;
-    font-size: 13.5px;
+    padding: 24px 12px 24px;
+    font-size: 14px;
   }
 
   .details,
@@ -466,70 +605,35 @@ a {
     border: 1px solid var(--line);
     margin-top: -1px;
     text-align: right;
-    padding: 13px 18px;
+    padding: 14px 18px;
   }
 
   .details__band {
     background: var(--band);
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 700;
-    padding: 12px 18px;
+    padding: 14px 18px;
+    text-align: right;
   }
 
   .details__label {
+    background: var(--band);
     font-size: 15px;
     color: #3f4650;
     font-weight: 500;
   }
 
   .details__value {
+    background: #ffffff;
     font-size: 16.5px;
     font-weight: 700;
+    text-align: right;
   }
 
   .fab {
     left: 14px;
-    bottom: 14px;
-    width: 68px;
-    height: 68px;
-  }
-
-  .site-footer__inner {
-    padding: 24px 18px 0;
-  }
-
-  .footer-cols {
-    flex-direction: column;
-    align-items: flex-end;
-    text-align: right;
-    gap: 20px;
-  }
-
-  .footer-col {
-    width: 100%;
-  }
-
-  .footer-col__title {
-    margin-bottom: 4px;
-    font-size: 15.5px;
-  }
-
-  .footer-badges {
-    justify-content: space-between;
-    gap: 16px;
-  }
-
-  .footer-badges__partners {
-    gap: 16px;
-    margin-left: auto;
-  }
-
-  .dga-wrap {
-    border-right: none;
-    padding-right: 0;
-  }
-
-  .tamkeen {
-    display: none;
+    bottom: 24px;
+    width: 74px;
+    height: 74px;
   }
 }
