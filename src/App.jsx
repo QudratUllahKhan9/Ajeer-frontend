@@ -668,7 +668,7 @@ export default function App() {
                 </th>
 
                 <td className="details__value">
-                  {permitData.gender || "-"}
+                  {permitData.gender || "ذكر"}
                 </td>
 
                 <th className="details__label">
